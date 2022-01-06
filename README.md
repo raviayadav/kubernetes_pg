@@ -40,7 +40,7 @@ spec:
   # or external users to connect to (browser)
   # Accept traffic on port and forward that traffic to targetPort
   # If the type is clusterIP then the service is only accessible from inside the cluster and not by external things like browsers. Usecase - microservices
-  # In this case, we will use type as nodePort which allows external access to the nodes. The nodePort value under ports should be greater than 30000
+  # In this case, we will use type as nodePort which allows external access to the nodes. The nodePort value under ports should be greater than 30000 upto 32k
   # We can use an ingress service if we don't want the restriction of port numbers
   selector:
     app: webapp
