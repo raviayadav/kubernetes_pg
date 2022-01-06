@@ -27,3 +27,108 @@ spec:
 * kubectl exec -it podname sh // to interact with terminal we need to use the it flag
 * from the shell, check if the app is deployed. wget http://localhost:80
 * services can access pods through the labels defined in the pods.
+* kubectl apply -f serviceConfig-fileName.yaml // creates the service
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-webapp
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or external users to connect to (browser)
+  # Accept traffic on port and forward that traffic to targetPort
+  # If the type is clusterIP then the service is only accessible from inside the cluster and not by external things like browsers. Usecase - microservices
+  # In this case, we will use type as nodePort which allows external access to the nodes. The nodePort value under ports should be greater than 30000
+  # We can use an ingress service if we don't want the restriction of port numbers
+  selector:
+    app: webapp
+
+  ports:
+    - name: http
+      port: 80
+      nodePort: 30080
+      
+  type: NodePort
+```
+* The above configurations will not work though. Still, we need to use labels in both the pod and service configurations
+```yaml
+# In the service.yaml
+  selector:
+    mylabel: webapp
+
+# In the pod.yaml
+metadata: 
+  name: webapp
+  labels:
+    mylabel: webapp
+```
+* Now we will be able to access through minikube-ip:30080
+* This proves that labels can be arbitrary. However just to maintain consistency, we will rename the label key in the first-pod.yaml to app and in the service.yaml file we will rename the selector key to app as well.
+* We use release key in yaml files to configure releases under the label.
+* Three dashes in yaml is the document seperator
+* We can make multiple pods from the same file using document seperator as shown below
+```yaml
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: webapp
+  labels:
+    app: webapp
+    release: "0"
+spec:
+  containers:
+  - name: webapp
+    image: richardchesterwood/k8s-fleetman-webapp-angular:release0
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: webapp-release-0-5
+  labels:
+    app: webapp
+    release: "0-5"
+spec:
+  containers:
+  - name: webapp
+    image: richardchesterwood/k8s-fleetman-webapp-angular:release0-5
+
+```
+* Below is the relese config for our service file
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-webapp
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or external users to connect to (browser)
+  # Accept traffic on port and forward that traffic to targetPort
+  # If the type is clusterIP then the service is only accessible from inside the cluster and not by external things like browsers. Usecase - microservices
+  # In this case, we will use type as nodePort which allows external access to the nodes. The nodePort value under ports should be greater than 30000
+  # We can use an ingress service if we don't want the restriction of port numbers
+  selector:
+    app: webapp
+    release: "0"
+
+  ports:
+    - name: http
+      port: 80
+      nodePort: 30080
+      
+  type: NodePort
+```
+* We can check what release the current service is pointing to by using 
+* kubectl describe service service-name-here
+* Then change the release in service.yaml to the release we want to go live on.
+* kubectl apply -f service-filename.yaml
+* kubectl get pods
+* kubectl get po
+* kubectl get po --show-labels
+* kubectl get po --show-labels -l release=0 //notice l for selecting
