@@ -1,5 +1,8 @@
 # kubernetes_pg
 
+*Kubectl is kubernetes command line. Minikube is like a mini k8s which has a docker installed in it so that you may interact with docker command line to the docker daemon inside the minikube as the docker daemon on windows is not very smooth to work with yet and one might face issues.
+* Type minikube docker-env, it wil give you the commands you need to use to make the connection between docker cmmnd line on ur pc and minikube docker daemon.
+
 * kubectl cluster-info
 * kubectl get nodes
 * kubectl get all
