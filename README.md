@@ -7,7 +7,7 @@
 * kubectl get nodes
 * kubectl get all
 * minikube ip
-* 
+* docker container run -p 8080:80 -d richardchesterwood/k8s-fleetman-webapp-angular:release0-5 ->> 8080 is the port exposed of cotainer, 80 is the port nginx is working on in container, -d is used to run in background and not hang the terminal. Connect using minikubeip:8080 from ur browser
 ```sh
 NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 service/kubernetes   ClusterIP   10.34.0.3    <none>        443/TCP   46h
