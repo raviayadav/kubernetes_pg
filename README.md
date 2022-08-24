@@ -135,3 +135,10 @@ spec:
 * kubectl get po
 * kubectl get po --show-labels
 * kubectl get po --show-labels -l release=0 //notice l for selecting
+
+## From Nana Course
+
+* Pods - smallest units of k8s, abstraction over container - a running environment or a layer as we only interact only with the k8s layer and not directly with the container itself. A pod usually consists of one application container.
+* Kubelet uses container runtime inside node to interact the pod with the node.
+* It starts the pod inside the node using the container runtime.
+* 
